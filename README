@@ -179,9 +179,6 @@ Topic-Partitioned Multinetwork Embedding (Krafft et al., 2012)
 Bernoulli TPME (Krafft et al., 2012)
 * ConditionalStructureBernoulliExperiment
 
-Mixture TPME (Krafft et al., 2012)
-* ConditionalStructureMixtureExperiment
-
 Bernoulli Link-LDA (Erosheva et al., 2004)
 * BernoulliEroshevaExperiment
 
@@ -189,6 +186,7 @@ Mixed-Membership Latent Space Model
 * MMLSEMExperiment
 
 Mixed-Membership Stochastic Blockmodel (Airoldi et al., 2008)
+* Separately implemented in ./mmsb
 
 Latent Dirichlet Allocation (Blei et al., 2003)
 * LDAExperiment
