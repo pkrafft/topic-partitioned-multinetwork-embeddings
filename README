@@ -70,35 +70,35 @@ vocab file
 
 --- data format example ---
 
-file : ../data/example-raw/doc-1.txt
+file : ./data/example-raw/doc-1.txt
 To: blue@example.com
 From: blah@example.com
 Subject: the apple
 Apple crisp!
 
-file : ../data/example-raw/doc-3.txt
+file : ./data/example-raw/doc-3.txt
 To: blue@example.com
 From: blech@example.com, blah@example.com
 Subject: the apple
 Tree! Tree, tree? Tree. (Tree)
 
-file : ../data/example-raw/doc-3.txt
+file : ./data/example-raw/doc-3.txt
 To: blue@example.com
 From: blech@example.com
 Subject: potato
 pie
 
-file : ../data/example/word-matrix.csv
-../data/raw/doc-1.txt,1,2,1,0,0,0
-../data/raw/doc-2.txt,1,2,0,0,5,0
-../data/raw/doc-3.txt,0,0,0,1,0,1
+file : ./data/example/word-matrix.csv
+./data/raw/doc-1.txt,1,2,1,0,0,0
+./data/raw/doc-2.txt,1,2,0,0,5,0
+./data/raw/doc-3.txt,0,0,0,1,0,1
 
-file : ../data/example/edge-matrix.csv
-../data/raw/doc-1.txt,2,0,1,0
-../data/raw/doc-2.txt,2,1,1,0
-../data/raw/doc-1.txt,0,0,0,1
+file : ./data/example/edge-matrix.csv
+./data/raw/doc-1.txt,2,0,1,0
+./data/raw/doc-2.txt,2,1,1,0
+./data/raw/doc-1.txt,0,0,0,1
 
-file : ../data/example/vocab.txt
+file : ./data/example/vocab.txt
 the
 apple
 crisp
@@ -112,10 +112,10 @@ pie
 $ ant
 
 # make the output directory
-$ mkdir ../output
+$ mkdir ./output
 
 # train the model (this might take a little while)
-$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=../data/nhc/word-matrix.csv --edge-matrix=../data/nhc/edge-matrix.csv --vocab=../data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=../output
+$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=./data/nhc/word-matrix.csv --edge-matrix=./data/nhc/edge-matrix.csv --vocab=./data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=./output
 
 --- understanding the output ---
 
@@ -149,7 +149,7 @@ end of the file name.
 --- restarting a job from a specific iteration ---
 
 # run the commands above first
-$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=../data/nhc/word-matrix.csv --edge-matrix=../data/nhc/edge-matrix.csv --vocab=../data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=../output --read-from-folder --read-folder=../output --iter-offset=10
+$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=./data/nhc/word-matrix.csv --edge-matrix=./data/nhc/edge-matrix.csv --vocab=./data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=./output --read-from-folder --read-folder=./output --iter-offset=10
 
 --- more help ---
 
