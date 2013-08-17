@@ -9,4 +9,5 @@ bin/*
 build/*
 *.~lock.*
 output/*
+.DS_Store
 
