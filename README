@@ -115,7 +115,8 @@ $ ant
 $ mkdir ./output
 
 # train the model (this might take a little while)
-$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=./data/nhc/word-matrix.csv --edge-matrix=./data/nhc/edge-matrix.csv --vocab=./data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=./output
+# note that running the model for more iterations generally gives better results
+$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=./data/nhc/word-matrix.csv --edge-matrix=./data/nhc/edge-matrix.csv --vocab=./data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=1000 --print-interval=1 --save-state-interval=100 --verbose --out-folder=./output
 
 --- understanding the output ---
 
@@ -149,7 +150,7 @@ end of the file name.
 --- restarting a job from a specific iteration ---
 
 # run the commands above first
-$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=./data/nhc/word-matrix.csv --edge-matrix=./data/nhc/edge-matrix.csv --vocab=./data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=./output --read-from-folder --read-folder=./output --iter-offset=10
+$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=./data/nhc/word-matrix.csv --edge-matrix=./data/nhc/edge-matrix.csv --vocab=./data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=./output --read-from-folder --read-folder=./output --iter-offset=1000
 
 --- more help ---
 
@@ -160,9 +161,17 @@ $ java -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperimen
 ------------- OVERVIEW -------------
 ------------------------------------
 
-This repo contains implementations of MCMC samplers for seven
+This repo contains implementations of MCMC samplers for several
 models. Each model is associated with a class in the experiments
-package that can be used to train that model:
+package that can be used to train that model.
+
+To run a particular model use:
+$ java -cp build/jar/NetworkModels.jar experiments.[ class name ]
+
+For help on the command-line arguments use:
+java -cp build/jar/NetworkModels.jar experiments.[ class name ] --help
+
+--- Model Classes ---
 
 Topic-Partitioned Multinetwork Embedding (Krafft et al., 2012)
 * ConditionalStructureExperiment
@@ -173,26 +182,23 @@ Bernoulli TPME (Krafft et al., 2012)
 Mixture TPME (Krafft et al., 2012)
 * ConditionalStructureMixtureExperiment
 
-Bernoulli Link-LDA (Erosheva, 
+Bernoulli Link-LDA (Erosheva et al., 2004)
 * BernoulliEroshevaExperiment
 
 Mixed-Membership Latent Space Model 
 * MMLSEMExperiment
 
-Mixed-Membership Stochastic Blockmodel (Airoldi, 
+Mixed-Membership Stochastic Blockmodel (Airoldi et al., 2008)
 
-Latent Dirichlet Allocation (Blei
+Latent Dirichlet Allocation (Blei et al., 2003)
 * LDAExperiment
 
 A simple baseline is also implemented.
 * EdgeFrequencyExperiment
 
-To run a particular model use
-$ java -cp build/jar/NetworkModels.jar experiments.[ model name ]
-
-
 Special Cases:
-- LSM is a special case of MMLSEMExperiment when num-topics is one.
+- LSM (Hoff et al., 2002) is a special case of MMLSEMExperiment when
+num-topics is one.
 
 ------------------------------------
 --------------- Data ---------------
