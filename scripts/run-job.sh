@@ -1,0 +1,1 @@
+/usr/java/jdk1.6.0_18/bin/java -Xmx1G -cp /lustre/work1/wallach/pkrafft/Java-Network-Models/build/jar/NetworkModels.jar $@

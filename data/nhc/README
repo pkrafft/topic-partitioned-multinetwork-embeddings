@@ -1,0 +1,93 @@
+----------------------------------------------------------------------
+----------------------------- README ---------------------------------
+----------------------------------------------------------------------
+
+--- please cite ---
+
+For a description of the data set, see
+
+Peter Krafft, Juston Moore, Bruce Desmarais, Hanna Wallach. Topic-partitioned multinetwork embeddings. Neural Information Processing
+Systems, 2012.
+
+@incollection{Krafft:2012,
+ title = {Topic-partitioned multinetwork embeddings},
+ author = {Peter Krafft and Juston Moore and Bruce Desmarais and Hanna Wallach},
+ booktitle = {Advances in Neural Information Processing Systems 25},
+ year = {2012}
+}
+
+--- data format ---
+
+There are three data files: one that contains the words
+of each email, one that contains the recipients of each email, and one
+that contains the vocabulary used in the emails.
+
+The format of these files is assumed to be as follows:
+
+word matrix
+- each line represents a document
+- columns are separated by commas
+- the first column gives the name of the original document location
+  (this can also be an empty column)
+- each subsequent column should contain a nonnegative number
+  indicating the number of times the word type associated with that
+  column occurs in that document (i.e. a vector of word counts
+  corresponding to the word types given in the vocab folder).
+
+edge matrix
+- each line represents a document
+- columns are separated by commas
+- the first column gives the name of the original document location
+  (this can also be an empty column)
+- the second column gives an index between zero and the number of
+  actors in the email network minus one (inclusive) indicating the
+  author of that email
+- there is one additional column for each actor in the email
+  network. Each column should contain either a one (indicating that
+  the actor is a recipient of that row's email) or a zero (indicating
+  that the actor is not a recipient of that row's email). The order of
+  these columns should correspond to the indices used to indicate the
+  authors of the emails. The column for the email's author should be 0.
+
+vocab file
+- each line represents a word type in the vocabulary
+- the order of the words must correspond to the order of the columns
+  in the word matrix file
+
+--- data format example ---
+
+file : ../data/example-raw/doc-1.txt
+To: blue@example.com
+From: blah@example.com
+Subject: the apple
+Apple crisp!
+
+file : ../data/example-raw/doc-3.txt
+To: blue@example.com
+From: blech@example.com, blah@example.com
+Subject: the apple
+Tree! Tree, tree? Tree. (Tree)
+
+file : ../data/example-raw/doc-3.txt
+To: blue@example.com
+From: blech@example.com
+Subject: potato
+pie
+
+file : ../data/example/word-matrix.csv
+../data/raw/doc-1.txt,1,2,1,0,0,0
+../data/raw/doc-2.txt,1,2,0,0,5,0
+../data/raw/doc-3.txt,0,0,0,1,0,1
+
+file : ../data/example/edge-matrix.csv
+../data/raw/doc-1.txt,2,0,1,0
+../data/raw/doc-2.txt,2,1,1,0
+../data/raw/doc-1.txt,0,0,0,1
+
+file : ../data/example/vocab.txt
+the
+apple
+crisp
+tree
+potato
+pie

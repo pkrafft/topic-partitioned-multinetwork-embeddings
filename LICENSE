@@ -1,0 +1,73 @@
+--------------------------------------
+------ LICENSE ON ORIGINAL CODE ------
+--------------------------------------
+
+Copyright (c) 2012, Peter Krafft, Juston Moore, Hanna Wallach, and
+Bruce Desmarais 
+All rights reserved.
+
+http://www.opensource.org/licenses/eclipse-1.0
+
+--------------------------------------
+------ LICENSES ON DEPENDENCIES ------
+--------------------------------------
+
+--- MALLET ---
+
+MALLET was written by Andrew McCallum, with contributions from several
+graduate students and staff, including Kedar Bellare, Gaurav
+Chandalia, Aron Culotta, Gregory Druck, Al Hough, Wei Li, David Mimno,
+David Pinto, Sameer Singh, Charles Sutton, Jerod Weinman, and Limin
+Yao, at University of Massachusetts Amherst, as well as contributions
+from Fernando Pereira, Ryan McDonald, and others at University of
+Pennsylvania.  The MALLET website was designed and written by David
+Mimno, with contributions from Charles Sutton, Gaurav Chandalia, and
+Al Hough.
+
+The toolkit is Open Source Software, and is released under the Common
+Public License. You are welcome to use the code under the terms of the
+licence for research or commercial purposes, however please
+acknowledge its use with a citation:
+
+McCallum, Andrew Kachites.  "MALLET: A Machine Learning for Language
+Toolkit." http://mallet.cs.umass.edu. 2002.
+
+Here is a BiBTeX entry:
+   @unpublished{McCallumMALLET,
+      author = "Andrew Kachites McCallum",
+      title = "MALLET: A Machine Learning for Language Toolkit",
+      note = "http://mallet.cs.umass.edu",
+      year = 2002}
+
+--- Apache CLI ---
+
+The Apache Software License, Version 2.0
+
+--- GNU Trove ---
+
+The source code for GNU Trove is licensed under the Lesser GNU Public
+License (LGPL).
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as
+published by the Free Software Foundation; either version 2.1 of the
+License, or (at your option) any later version. This library is
+distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+License for more details. You should have received a copy of the GNU
+Lesser General Public License along with this library; if not, write
+to the Free Software Foundation, Inc., 51 Franklin Street, Fifth
+Floor, Boston, MA 02110-1301 USA
+
+
+Two classes (HashFunctions and PrimeFinder) included in Trove are
+licensed under the following terms: Copyright (c) 1999 CERN - European
+Organization for Nuclear Research. Permission to use, copy, modify,
+distribute and sell this software and its documentation for any
+purpose is hereby granted without fee, provided that the above
+copyright notice appear in all copies and that both that copyright
+notice and this permission notice appear in supporting
+documentation. CERN makes no representations about the suitability of
+this software for any purpose. It is provided "as is" without
+expressed or implied warranty.

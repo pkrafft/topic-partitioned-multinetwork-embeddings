@@ -1,0 +1,74 @@
+# code from NIPS paper experiments
+
+####################################
+##### preliminary experiments ######
+####################################
+
+### identifying hyperparameters to use for LDA and mixture based models ###
+
+python scripts/run-swarm-experiments.py -n -i 10000 -r 5 -f output-hyper-optim-nhc --lda --word_mixture -o
+python scripts/run-swarm-experiments.py -e -i 10000 -r 5 -f output-hyper-optim-enron --lda --word_mixture -o
+
+### check all experiments are done
+# these commands will not print anything when everything is done
+# otherwise they print how far along each unfinished experiment is
+
+python scripts/run-swarm-experiments.py -n -i 10000 -r 5 -f output-hyper-optim-nhc --lda --word_mixture -o -c
+python scripts/run-swarm-experiments.py -e -i 10000 -r 5 -f output-hyper-optim-enron --lda --word_mixture -o -c
+
+### after all experiments complete
+
+sh scripts/parse-output/parse-hyper-optim.sh
+
+# then compute the hyperparameters to use as described in Krafft et al., 2012
+# these hyperparameters are then hard-coded into scripts/run-swarm-experiments.py
+
+##############################
+###### main experiments ######
+##############################
+
+### running basic experiments ###
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --lda --tpme --tpme_full --erosheva --bernoulli --lsm
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --lda --tpme --erosheva --bernoulli --lsm
+
+python scripts/run-mmsb.py
+python scripts/run-edge-freq-experiments.py 
+
+### check that they all are finished ###
+# (not currently implemented for MMSB)
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --lda --tpme --tpme_full --erosheva --bernoulli --lsm -c
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --lda --tpme --erosheva --bernoulli --lsm -c
+
+### get the results for all the experiments ###
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --lda --tpme --erosheva --bernoulli --lsm -l 50000
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --lda --tpme --erosheva --bernoulli --lsm -l 50000
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --lda --tpme --erosheva --bernoulli --lsm -p
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --lda --tpme --erosheva --bernoulli --lsm -p
+
+python scripts/run-mmsb.py -p
+python scripts/run-edge-freq-experiments.py -p
+
+####################################
+###### additional experiments ######
+####################################
+
+### running edge model-only mixture/admxiture models  ###
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --mlsm --mmlsm -o
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --mlsm --mmlsm -o
+
+### running all other models ###
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --exchangeable --asymmetric --joint_mixture
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --tpme_full --exchangeable --asymmetric --joint_mixture
+
+### checking for completion ###
+
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --mlsm --mmlsm -o -c
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --mlsm --mmlsm -o -c
+python scripts/run-swarm-experiments.py -n -i 50000 -r 5 -f output-nhc --exchangeable --asymmetric --joint_mixture -c
+python scripts/run-swarm-experiments.py -e -i 50000 -r 5 -f output-enron --tpme_full --exchangeable --asymmetric --joint_mixture -c

@@ -1,0 +1,222 @@
+----------------------------------------------------------------------
+----------------------------- README ---------------------------------
+----------------------------------------------------------------------
+
+Code and data for Krafft et al. "Topic-Partitioned Multinetwork
+Embeddings", NIPS 2012
+
+If you use this code or data in a paper, please use the following citation:
+@incollection{NIPS2012_1288,
+ title ={Topic-Partitioned Multinetwork Embeddings},
+ author={Peter Krafft and Juston Moore and Bruce Desmarais and Hanna Wallach},
+ booktitle = {Advances in Neural Information Processing Systems 25},
+ editor = {P. Bartlett and F.C.N. Pereira and C.J.C. Burges and L. Bottou and K.Q. Weinberger},
+ pages = {2816--2824},
+ year = {2012},
+ url = {http://books.nips.cc/papers/files/nips25/NIPS2012_1288.pdf}
+}
+
+The programs and documents are distributed without any warranty, express or
+implied.  As the programs were written for research purposes only, they have
+not been tested to the degree that would be advisable in any important
+application.  All use of these programs is entirely at the user's own risk.
+
+------------------------------------
+----------- QUICKSTART -------------
+------------------------------------
+
+This quickstart section provides an example of how to train our model
+using this package.
+
+All commands should be run from this top directory.
+
+--- data format ---
+
+Our main model requires three data files: one that contains the words
+of each email, one that contains the recipients of each email, and one
+that contains the vocabulary used in the emails.
+
+The format of these files is assumed to be as follows:
+
+word matrix
+- each line represents a document
+- columns are separated by commas
+- the first column gives the name of the original document location
+  (this can also be an empty column)
+- each subsequent column should contain a nonnegative number
+  indicating the number of times the word type associated with that
+  column occurs in that document (i.e. a vector of word counts
+  corresponding to the word types given in the vocab folder).
+
+edge matrix
+- each line represents a document
+- columns are separated by commas
+- the first column gives the name of the original document location
+  (this can also be an empty column)
+- the second column gives an index between zero and the number of
+  actors in the email network minus one (inclusive) indicating the
+  author of that email
+- there is one additional column for each actor in the email
+  network. Each column should contain either a one (indicating that
+  the actor is a recipient of that row's email) or a zero (indicating
+  that the actor is not a recipient of that row's email). The order of
+  these columns should correspond to the indices used to indicate the
+  authors of the emails. The coulmn for the email's author should be 0.
+
+vocab file
+- each line represents a word type in the vocabulary
+- the order of the words must correspond to the order of the columns
+  in the word matrix file
+
+--- data format example ---
+
+file : ../data/example-raw/doc-1.txt
+To: blue@example.com
+From: blah@example.com
+Subject: the apple
+Apple crisp!
+
+file : ../data/example-raw/doc-3.txt
+To: blue@example.com
+From: blech@example.com, blah@example.com
+Subject: the apple
+Tree! Tree, tree? Tree. (Tree)
+
+file : ../data/example-raw/doc-3.txt
+To: blue@example.com
+From: blech@example.com
+Subject: potato
+pie
+
+file : ../data/example/word-matrix.csv
+../data/raw/doc-1.txt,1,2,1,0,0,0
+../data/raw/doc-2.txt,1,2,0,0,5,0
+../data/raw/doc-3.txt,0,0,0,1,0,1
+
+file : ../data/example/edge-matrix.csv
+../data/raw/doc-1.txt,2,0,1,0
+../data/raw/doc-2.txt,2,1,1,0
+../data/raw/doc-1.txt,0,0,0,1
+
+file : ../data/example/vocab.txt
+the
+apple
+crisp
+tree
+potato
+pie
+
+--- training our main model ---
+
+# build the jar file (requires ant version 1.7 or higher)
+$ ant
+
+# make the output directory
+$ mkdir ../output
+
+# train the model (this might take a little while)
+$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=../data/nhc/word-matrix.csv --edge-matrix=../data/nhc/edge-matrix.csv --vocab=../data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=../output
+
+--- understanding the output ---
+
+doc_topics.txt.gz : document-specific topic proportions
+edge_state.txt.gz : assignments of recipients to tokens
+intercepts.txt : intercept for each topic-specific latent space
+latent_spaces.txt : positions for each topic-specific latent
+		    space. Each row is an entire space. The position
+		    of actor i is at the indices i*k, i*k + 1, ...,
+		    (i*k + 1) - 1, where k is the dimension of the
+		    space.
+log_like.txt : the log likelihood at particular iterations (frequency
+	       of calculation depends on the value of the
+	       print-interval option)
+log_prob.txt : the joint probability of the data and the model
+	       parameters at particular iterations determined by
+	       print-interval
+options.0.txt : some information about the job that was run
+topic_summary.txt.gz : the coherence and top ten words in each topic
+topic_words.txt.gz : topic-specific distributions over word types
+word_state.txt.gz : assignments of tokens to topics
+
+Files such as
+
+word_state.txt.gz.5
+
+are created when --save-state-interval is greater than 0 and represent
+the same data as the stem file but at the iteration specified at the
+end of the file name.
+
+--- restarting a job from a specific iteration ---
+
+# run the commands above first
+$ java -Xmx1G -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --word-matrix=../data/nhc/word-matrix.csv --edge-matrix=../data/nhc/edge-matrix.csv --vocab=../data/nhc/vocab.txt --num-actors=30 --num-topics=50 --num-latent-dims=2 --alpha=0.01 --beta=0.01 --num-iter=10 --print-interval=1 --save-state-interval=5 --verbose --out-folder=../output --read-from-folder --read-folder=../output --iter-offset=10
+
+--- more help ---
+
+# see all of the command line options
+$ java -cp build/jar/NetworkModels.jar experiments.ConditionalStructureExperiment --help
+
+------------------------------------
+------------- OVERVIEW -------------
+------------------------------------
+
+This repo contains implementations of MCMC samplers for seven
+models. Each model is associated with a class in the experiments
+package that can be used to train that model:
+
+Topic-Partitioned Multinetwork Embedding (Krafft et al., 2012)
+* ConditionalStructureExperiment
+
+Bernoulli TPME (Krafft et al., 2012)
+* ConditionalStructureBernoulliExperiment
+
+Mixture TPME (Krafft et al., 2012)
+* ConditionalStructureMixtureExperiment
+
+Bernoulli Link-LDA (Erosheva, 
+* BernoulliEroshevaExperiment
+
+Mixed-Membership Latent Space Model 
+* MMLSEMExperiment
+
+Mixed-Membership Stochastic Blockmodel (Airoldi, 
+
+Latent Dirichlet Allocation (Blei
+* LDAExperiment
+
+A simple baseline is also implemented.
+* EdgeFrequencyExperiment
+
+To run a particular model use
+$ java -cp build/jar/NetworkModels.jar experiments.[ model name ]
+
+
+Special Cases:
+- LSM is a special case of MMLSEMExperiment when num-topics is one.
+
+------------------------------------
+--------------- Data ---------------
+------------------------------------
+
+We collected the NHC data ourselves. It is part of the public record.
+
+We downloaded the Enron data from
+http://www.infochimps.com/datasets/enron-email-data-with-manager-subordinate-relationship-metadata#overview_tab
+It is also part of the public record.
+
+------------------------------------
+----------- DEPENDENCIES -----------
+------------------------------------
+
+MALLET and its dependencies
+
+Apache Commons CLI version 1.2
+
+GNU Trove
+
+build.xml requires ant version 1.7 or later
+
+To run MMSB you will need the a soft link to the boost C++ library in 
+the mmsb directly.  You can currently download this library here:
+http://www.boost.org/
+

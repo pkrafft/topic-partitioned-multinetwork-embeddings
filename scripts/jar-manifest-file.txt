@@ -1,0 +1,1 @@
+Class-Path: lib/Jama-1.0.2.jar lib/mallet-deps.jar lib/mallet.jar lib/trove.jar
